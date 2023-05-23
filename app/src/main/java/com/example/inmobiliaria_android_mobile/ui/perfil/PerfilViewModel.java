@@ -74,8 +74,8 @@ public class PerfilViewModel extends AndroidViewModel {
                 propietario.setDni(dniLong);
                 propietario.setNombre(nombre);
                 propietario.setApellido(apellido);
-                propietario.setEmail(email);
-                propietario.setContraseña(clave);
+                propietario.setUsuario(email);
+                propietario.setClave(clave);
                 propietario.setTelefono(telefono);
 
                 api.actualizarPerfil(propietario);

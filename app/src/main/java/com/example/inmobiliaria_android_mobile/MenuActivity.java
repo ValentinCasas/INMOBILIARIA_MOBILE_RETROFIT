@@ -7,9 +7,12 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.inmobiliaria_android_mobile.modelo.Propietario;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,29 +26,33 @@ public class MenuActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMenuBinding binding;
+    private MenuActivityViewModel mv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
+        mv = new ViewModelProvider(this).get(MenuActivityViewModel.class);
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMenu.toolbar);
-
-        Intent intent = getIntent();
-        String nombre = intent.getStringExtra("nombre");
-        String email = intent.getStringExtra("email");
-        int avatarResourceId = getIntent().getIntExtra("avatar", -1);
 
         View headerView = binding.navView.getHeaderView(0);
         ImageView imageView = headerView.findViewById(R.id.imageView);
         TextView tvNombre = headerView.findViewById(R.id.tvNombre);
         TextView tvEmail = headerView.findViewById(R.id.tvMail);
 
-        tvNombre.setText(nombre);
-        tvEmail.setText(email);
-        imageView.setImageResource(avatarResourceId);
+        mv.obtenerPropietario();
+
+        mv.getPropietarioMutable().observe(this, new Observer<Propietario>() {
+            @Override
+            public void onChanged(Propietario propietario) {
+                tvNombre.setText(propietario.getNombre());
+                tvEmail.setText(propietario.getUsuario());
+            }
+        });
+
         binding.appBarMenu.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

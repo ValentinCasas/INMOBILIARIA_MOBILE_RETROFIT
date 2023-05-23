@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mv.confirmarLogin(binding.etMail.getText().toString(), binding.etClave.getText().toString());
+                mv.confirmaLogin(binding.etMail.getText().toString(), binding.etClave.getText().toString());
             }
         });
 
