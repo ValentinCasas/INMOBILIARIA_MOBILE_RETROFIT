@@ -112,6 +112,22 @@ public class Inmueble implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "Inmueble{" +
+                "id=" + id +
+                ", idPropietario=" + idPropietario +
+                ", propietario=" + propietario +
+                ", direccion='" + direccion + '\'' +
+                ", uso='" + uso + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", cantidadAmbientes=" + cantidadAmbientes +
+                ", coordenadas='" + coordenadas + '\'' +
+                ", precioInmueble=" + precioInmueble +
+                ", estado='" + estado + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

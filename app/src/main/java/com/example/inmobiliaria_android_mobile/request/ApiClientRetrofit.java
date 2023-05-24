@@ -19,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public class ApiClientRetrofit {
 
@@ -74,8 +75,9 @@ public class ApiClientRetrofit {
         Call<Contrato> contratosPorInmueble(@Header("Authorization") String token, @Body Inmueble inmueble);
 
         //pagos del contrato
-        @POST("Inmueble/contrato-vigente")
-        Call<ArrayList<Pago>> pagosPorContrato(@Header("Authorization") String token, @Body Contrato contrato);
+        @GET("Inmueble/pagos-contrato/{contratoId}")
+        Call<ArrayList<Pago>> pagosPorContrato(@Header("Authorization") String token, @Path("contratoId") int contratoId);
+
 
     }
 }

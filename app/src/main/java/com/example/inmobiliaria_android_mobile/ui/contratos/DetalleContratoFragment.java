@@ -62,7 +62,7 @@ public class DetalleContratoFragment extends Fragment {
                 binding.btnPagos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mv.obtenerPagosPorContrato(contrato);
+                        mv.obtenerPagosPorContrato(contrato.getId());
                         mv.getPagosMutable().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pago>>() {
                             @Override
                             public void onChanged(ArrayList<Pago> pagos) {

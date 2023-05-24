@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,11 +17,16 @@ import com.example.inmobiliaria_android_mobile.MainActivity;
 import com.example.inmobiliaria_android_mobile.modelo.Contrato;
 import com.example.inmobiliaria_android_mobile.modelo.Inmueble;
 import com.example.inmobiliaria_android_mobile.modelo.Pago;
+import com.example.inmobiliaria_android_mobile.modelo.Propietario;
 import com.example.inmobiliaria_android_mobile.request.ApiClient;
 import com.example.inmobiliaria_android_mobile.request.ApiClientRetrofit;
+import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,13 +35,11 @@ import retrofit2.Response;
 public class DetalleContratoViewModel extends AndroidViewModel {
 
     private Context context;
-    private ApiClient api;
     private MutableLiveData<Contrato> contratoMutable;
     private MutableLiveData<ArrayList<Pago>> pagosMutable;
     public DetalleContratoViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
-        api = ApiClient.getApi();
     }
 
     public LiveData<ArrayList<Pago>> getPagosMutable() {
@@ -72,6 +76,7 @@ public class DetalleContratoViewModel extends AndroidViewModel {
                 if (response.isSuccessful()) {
                     Contrato contrato = response.body();
                     contratoMutable.postValue(contrato);
+                    Log.d("contratooo", contrato.toString());
                 } else {
                     Toast.makeText(context, "Error al obtener el contrato", Toast.LENGTH_SHORT).show();
                 }
@@ -84,7 +89,7 @@ public class DetalleContratoViewModel extends AndroidViewModel {
         });
     }
 
-    public void obtenerPagosPorContrato(Contrato contrato) {
+    public void obtenerPagosPorContrato(int contratoId) {
 
         SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
@@ -97,25 +102,34 @@ public class DetalleContratoViewModel extends AndroidViewModel {
         }
 
         ApiClientRetrofit.EndPointInmobiliaria end = ApiClientRetrofit.getEndPointInmobiliaria();
-        Call<ArrayList<Pago>> call = end.pagosPorContrato(token, contrato);
+        Call<ArrayList<Pago>> call = end.pagosPorContrato(token, contratoId);
 
         call.enqueue(new Callback<ArrayList<Pago>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<Pago>> call, @NonNull Response<ArrayList<Pago>> response) {
                 if (response.isSuccessful()) {
                     ArrayList<Pago> pagos = response.body();
-                    pagosMutable.postValue(pagos);
+                    pagosMutable.setValue(pagos);
                 } else {
-                    Toast.makeText(context, "Error al obtener los pagos", Toast.LENGTH_SHORT).show();
+                    String error = "Error al obtener los pagos. Código: " + response.code();
+                    try {
+                        error += "\n" + response.errorBody().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("error", error);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Pago>> call, @NonNull Throwable t) {
-                Toast.makeText(context, "Error al obtener los pagos", Toast.LENGTH_SHORT).show();
+                String error = "Error al obtener los pagos: " + t.getMessage();
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 
 
 
