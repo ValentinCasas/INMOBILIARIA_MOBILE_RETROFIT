@@ -1,5 +1,6 @@
 package com.example.inmobiliaria_android_mobile.ui.inquilinos;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -20,32 +21,49 @@ import com.example.inmobiliaria_android_mobile.databinding.FragmentDetalleInmueb
 import com.example.inmobiliaria_android_mobile.databinding.FragmentDetalleInquilinoBinding;
 import com.example.inmobiliaria_android_mobile.modelo.Inmueble;
 import com.example.inmobiliaria_android_mobile.modelo.Inquilino;
+import com.example.inmobiliaria_android_mobile.modelo.Propietario;
 import com.example.inmobiliaria_android_mobile.request.ApiClient;
 
 public class DetalleInquilinoFragment extends Fragment {
 
     private FragmentDetalleInquilinoBinding binding;
-    private Inquilino inquilino;
+    private DetalleInquilinoViewModel mv;
+    private Inmueble inmueble;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         binding = FragmentDetalleInquilinoBinding.inflate(inflater, container, false);
+        mv = new ViewModelProvider(this).get(DetalleInquilinoViewModel.class);
         View root = binding.getRoot();
 
         Bundle bundle = getArguments();
-        inquilino = (Inquilino) bundle.getSerializable("inquilino");
+        inmueble = (Inmueble) bundle.getSerializable("inmueble");
 
+        mv.obtenerInquilino(inmueble);
+        mv.obtenerPropietarioGarante();
 
-        binding.tvCodigo.setText(String.valueOf(inquilino.getIdInquilino()));
-        binding.tvDni.setText(String.valueOf(inquilino.getDNI()));
-        binding.tvNombre.setText(inquilino.getNombre());
-        binding.tvApellido.setText(inquilino.getApellido());
-        binding.tvMail.setText(inquilino.getEmail());
-        binding.tvTelefono.setText(inquilino.getTelefono());
-        binding.tvTelefonoGarante.setText(inquilino.getTelefonoGarante());
-        binding.tvGarante.setText(inquilino.getNombreGarante());
+        mv.getInquilinoMutable().observe(getViewLifecycleOwner(), new Observer<Inquilino>() {
+            @Override
+            public void onChanged(Inquilino inquilino) {
+                    binding.tvCodigo.setText(String.valueOf(inquilino.getId()));
+                    binding.tvDni.setText(String.valueOf(inquilino.getDni()));
+                    binding.tvNombre.setText(inquilino.getNombre());
+                    binding.tvApellido.setText(inquilino.getApellido());
+                    binding.tvMail.setText(inquilino.getEmail());
+                    binding.tvTelefono.setText(inquilino.getTelefono());
+            }
+        });
+
+        mv.getPropietarioGaranteMutable().observe(getViewLifecycleOwner(), new Observer<Propietario>() {
+            @Override
+            public void onChanged(Propietario propietario) {
+                binding.tvTelefonoGarante.setText(propietario.getTelefono());
+                binding.tvGarante.setText(propietario.getNombre());
+
+            }
+        });
 
 
         return root;

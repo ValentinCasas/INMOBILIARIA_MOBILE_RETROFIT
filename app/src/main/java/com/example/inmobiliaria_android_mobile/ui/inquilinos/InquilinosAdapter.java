@@ -47,7 +47,7 @@ public class InquilinosAdapter extends RecyclerView.Adapter<InquilinosAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull InquilinosAdapter.ViewHolder holder, int position) {
         holder.direccion.setText(inmueblesAlquilados.get(position).getDireccion());
-        Picasso.get().load(inmueblesAlquilados.get(position).getImagen()).into(holder.fotoInmueble);
+        //Picasso.get().load(inmueblesAlquilados.get(position).getImagen()).into(holder.fotoInmueble);
 
 
     }
@@ -59,14 +59,12 @@ public class InquilinosAdapter extends RecyclerView.Adapter<InquilinosAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView fotoInmueble;
+        //ImageView fotoInmueble;
         TextView direccion;
         Button btnVerInquilino;
-        Inmueble inmueble;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            fotoInmueble = itemView.findViewById(R.id.ivInmueble);
+            //fotoInmueble = itemView.findViewById(R.id.ivInmueble);
             direccion = itemView.findViewById(R.id.tvDireccion);
             btnVerInquilino = itemView.findViewById(R.id.btnVerInquilino);
 
@@ -79,13 +77,14 @@ public class InquilinosAdapter extends RecyclerView.Adapter<InquilinosAdapter.Vi
             if (position != RecyclerView.NO_POSITION) {
 
                 Inmueble inmueble = inmueblesAlquilados.get(position);
-                ApiClient api = ApiClient.getApi();
-                Inquilino inquilino = api.obtenerInquilino(inmueble);
+
+                //ApiClient api = ApiClient.getApi();
+                //Inquilino inquilino = api.obtenerInquilino(inmueble);
 
                 NavController navController = Navigation.findNavController(v);
 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("inquilino", inquilino);
+                bundle.putSerializable("inmueble", inmueble);
                 navController.navigate(R.id.nav_detalleInquilinoFragment, bundle);
 
             }

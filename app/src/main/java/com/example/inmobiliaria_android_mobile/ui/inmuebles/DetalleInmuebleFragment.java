@@ -43,18 +43,19 @@ public class DetalleInmuebleFragment extends Fragment {
         Bundle bundle = getArguments();
         inmueble = (Inmueble) bundle.getSerializable("inmueble");
 
-        binding.tvCodigo.setText(String.valueOf(inmueble.getIdInmueble()));
-        binding.tvAmbientes.setText(String.valueOf(inmueble.getAmbientes()));
+        binding.tvCodigo.setText(String.valueOf(inmueble.getId()));
+        binding.tvAmbientes.setText(String.valueOf(inmueble.getCantidadAmbientes()));
         binding.tvDireccion.setText(inmueble.getDireccion());
-        binding.tvPrecio.setText(String.valueOf(inmueble.getPrecio()));
+        binding.tvPrecio.setText(String.valueOf(inmueble.getPrecioInmueble()));
         binding.tvUso.setText(inmueble.getUso());
         binding.tvTipo.setText(inmueble.getTipo());
-        Picasso.get().load(inmueble.getImagen()).into(binding.imageView2);
-        binding.cbEstado.setChecked(inmueble.isEstado());
+        //Picasso.get().load(inmueble.getImagen()).into(binding.imageView2);
+        binding.cbEstado.setChecked(inmueble.getEstado().equals("Disponible"));
+
         binding.cbEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inmueble.setEstado(binding.cbEstado.isChecked());
+                inmueble.setEstado(binding.cbEstado.isChecked() ? "Disponible" : "Agotado");
                 mv.actualizarInmueble(inmueble);
             }
         });

@@ -16,12 +16,9 @@ import java.util.ArrayList;
 public class DetallePagosViewModel extends AndroidViewModel {
 
     private Context context;
-    private ApiClient api;
-
     public DetallePagosViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
-        api = ApiClient.getApi();
     }
 
 }

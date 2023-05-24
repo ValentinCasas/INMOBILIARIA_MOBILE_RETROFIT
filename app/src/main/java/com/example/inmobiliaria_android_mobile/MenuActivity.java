@@ -49,7 +49,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onChanged(Propietario propietario) {
                 tvNombre.setText(propietario.getNombre());
-                tvEmail.setText(propietario.getUsuario());
+                tvEmail.setText(propietario.getEmail());
             }
         });
 

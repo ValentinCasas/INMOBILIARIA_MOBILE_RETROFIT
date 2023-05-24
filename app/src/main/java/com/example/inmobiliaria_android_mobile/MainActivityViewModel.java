@@ -74,7 +74,6 @@ public class MainActivityViewModel extends AndroidViewModel {
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 Toast.makeText(context, "Error al llamar al servicio de login", Toast.LENGTH_SHORT).show();
-                Log.d("RESPONSEEEE", t.getMessage());
             }
         });
     }

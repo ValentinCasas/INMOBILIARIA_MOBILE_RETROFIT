@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class DetalleContratoFragment extends Fragment {
 
     private FragmentDetalleContratoBinding binding;
-    private Contrato contrato;
+    private Inmueble inmueble;
     private DetalleContratoViewModel mv;
 
     @Override
@@ -42,35 +42,42 @@ public class DetalleContratoFragment extends Fragment {
 
 
         Bundle bundle = getArguments();
-        contrato = (Contrato) bundle.getSerializable("contratoDelInmueble");
+        inmueble = (Inmueble) bundle.getSerializable("inmueble");
 
-        Inquilino inquilino = contrato.getInquilino();
-        Inmueble inmueble = contrato.getInmueble();
+        mv.obtenerContrato(inmueble);
 
-        binding.tvCodigo.setText(String.valueOf(contrato.getIdContrato()));
-        binding.tvMontoMensual.setText(String.valueOf(contrato.getMontoAlquiler()));
-        binding.tvFechaInicio.setText(contrato.getFechaInicio());
-        binding.tvFechaFinalizacion.setText(contrato.getFechaFin());
-        binding.tvInquilino.setText(inquilino.getNombre());
-        binding.tvInmueble.setText(inmueble.getDireccion());
-
-        binding.btnPagos.setOnClickListener(new View.OnClickListener() {
+        mv.getContratoMutable().observe(getViewLifecycleOwner(), new Observer<Contrato>() {
             @Override
-            public void onClick(View v) {
-                mv.obtenerPagos(contrato);
+            public void onChanged(Contrato contrato) {
 
-                mv.getPagosMutable().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pago>>() {
+                Inquilino inquilino = contrato.getInquilino();
+                Inmueble inmueble = contrato.getInmueble();
+
+                binding.tvCodigo.setText(String.valueOf(contrato.getId()));
+                binding.tvMontoMensual.setText(String.valueOf(contrato.getMontoAlquilerMensual()));
+                binding.tvFechaInicio.setText(contrato.getFechaInicio());
+                binding.tvFechaFinalizacion.setText(contrato.getFechaFinalizacion());
+                binding.tvInquilino.setText(inquilino.getNombre());
+                binding.tvInmueble.setText(inmueble.getDireccion());
+                binding.btnPagos.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onChanged(ArrayList<Pago> pagos) {
-                        NavController navController = Navigation.findNavController(v);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("pagosAsociados", pagos);
-                        navController.navigate(R.id.nav_detallePagosFragment, bundle);
+                    public void onClick(View v) {
+                        mv.obtenerPagosPorContrato(contrato);
+                        mv.getPagosMutable().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pago>>() {
+                            @Override
+                            public void onChanged(ArrayList<Pago> pagos) {
+                                NavController navController = Navigation.findNavController(v);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("pagosAsociados", pagos);
+                                navController.navigate(R.id.nav_detallePagosFragment, bundle);
+                            }
+                        });
                     }
                 });
+
+
             }
         });
-
 
 
         return root;

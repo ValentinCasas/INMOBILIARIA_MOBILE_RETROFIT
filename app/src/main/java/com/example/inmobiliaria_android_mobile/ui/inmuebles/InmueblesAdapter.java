@@ -50,8 +50,8 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.direccion.setText(inmuebles.get(position).getDireccion());
-        holder.monto.setText(inmuebles.get(position).getPrecio() + "");
-        Glide.with(context).load(inmuebles.get(position).getImagen()).into(holder.fotoInmueble);
+        holder.monto.setText(inmuebles.get(position).getPrecioInmueble() + "");
+        //Glide.with(context).load(inmuebles.get(position).getImagen()).into(holder.fotoInmueble);
 
 
     }
@@ -63,14 +63,12 @@ public class InmueblesAdapter extends RecyclerView.Adapter<InmueblesAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView fotoInmueble;
+        //ImageView fotoInmueble;
         TextView direccion, monto;
-        Inmueble inmueble;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            fotoInmueble = itemView.findViewById(R.id.ivInmueble);
+            //fotoInmueble = itemView.findViewById(R.id.ivInmueble);
             direccion = itemView.findViewById(R.id.tvDireccion);
             monto = itemView.findViewById(R.id.tvMontoMensual);
         }

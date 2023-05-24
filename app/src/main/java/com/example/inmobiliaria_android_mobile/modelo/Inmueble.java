@@ -5,37 +5,54 @@ import java.util.Objects;
 
 public class Inmueble implements Serializable {
 
-    private int idInmueble;
+    private int id;
+    private int idPropietario;
+    private Propietario propietario;
     private String direccion;
     private String uso;
     private String tipo;
-    private int ambientes;
-    private double precio;
-    private Propietario propietario;
-    //En falso significa que el innmueble no está disponible por alguna falla en el mismo.
-    private boolean estado=true;
-    private String imagen;
+    private int cantidadAmbientes;
+    private String coordenadas;
+    private double precioInmueble;
+    private String estado;
+    //private String imagen;
 
-    public Inmueble(int idInmueble, String direccion, String uso, String tipo, int ambientes, double precio, Propietario propietario, boolean estado, String imagen) {
-        this.idInmueble = idInmueble;
+
+    public Inmueble(int id, int idPropietario, Propietario propietario, String direccion, String uso, String tipo, int cantidadAmbientes, String coordenadas, double precioInmueble, String estado) {
+        this.id = id;
+        this.idPropietario = idPropietario;
+        this.propietario = propietario;
         this.direccion = direccion;
         this.uso = uso;
         this.tipo = tipo;
-        this.ambientes = ambientes;
-        this.precio = precio;
-        this.propietario = propietario;
+        this.cantidadAmbientes = cantidadAmbientes;
+        this.coordenadas = coordenadas;
+        this.precioInmueble = precioInmueble;
         this.estado = estado;
-        this.imagen = imagen;
-    }
-    public Inmueble() {
-
-    }
-    public int getIdInmueble() {
-        return idInmueble;
     }
 
-    public void setIdInmueble(int idInmueble) {
-        this.idInmueble = idInmueble;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdPropietario() {
+        return idPropietario;
+    }
+
+    public void setIdPropietario(int idPropietario) {
+        this.idPropietario = idPropietario;
+    }
+
+    public Propietario getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Propietario propietario) {
+        this.propietario = propietario;
     }
 
     public String getDireccion() {
@@ -62,44 +79,36 @@ public class Inmueble implements Serializable {
         this.tipo = tipo;
     }
 
-    public int getAmbientes() {
-        return ambientes;
+    public int getCantidadAmbientes() {
+        return cantidadAmbientes;
     }
 
-    public void setAmbientes(int ambientes) {
-        this.ambientes = ambientes;
+    public void setCantidadAmbientes(int cantidadAmbientes) {
+        this.cantidadAmbientes = cantidadAmbientes;
     }
 
-    public double getPrecio() {
-        return precio;
+    public String getCoordenadas() {
+        return coordenadas;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setCoordenadas(String coordenadas) {
+        this.coordenadas = coordenadas;
     }
 
-    public Propietario getPropietario() {
-        return propietario;
+    public double getPrecioInmueble() {
+        return precioInmueble;
     }
 
-    public void setPropietario(Propietario propietario) {
-        this.propietario = propietario;
+    public void setPrecioInmueble(double precioInmueble) {
+        this.precioInmueble = precioInmueble;
     }
 
-    public boolean isEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
     }
 
     @Override
@@ -107,11 +116,11 @@ public class Inmueble implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Inmueble inmueble = (Inmueble) o;
-        return idInmueble == inmueble.idInmueble;
+        return id == inmueble.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idInmueble);
+        return Objects.hash(id);
     }
 }

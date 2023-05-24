@@ -1,59 +1,52 @@
 package com.example.inmobiliaria_android_mobile.modelo;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class Contrato implements Serializable {
 
-    private int idContrato;
-    private String fechaInicio;
-    private String fechaFin;
-    private double montoAlquiler;
+    private int id;
+    private int idInquilino;
     private Inquilino inquilino;
+    private int idInmueble;
     private Inmueble inmueble;
+    private String fechaInicio;
+    private String fechaFinalizacion;
+    private double montoAlquilerMensual;
+    private boolean activo;
 
-    public Contrato() {}
-    public Contrato(int idContrato, String fechaInicio, String fechaFin, double montoAlquiler, Inquilino inquilino, Inmueble inmueble) {
-        this.idContrato = idContrato;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.montoAlquiler = montoAlquiler;
+    public Contrato() {
+    }
+
+    public Contrato(int id, int idInquilino, Inquilino inquilino, int idInmueble, Inmueble inmueble, String fechaInicio, String fechaFinalizacion, double montoAlquilerMensual, boolean activo) {
+        this.id = id;
+        this.idInquilino = idInquilino;
         this.inquilino = inquilino;
+        this.idInmueble = idInmueble;
         this.inmueble = inmueble;
-    }
-
-    public int getIdContrato() {
-        return idContrato;
-    }
-
-    public void setIdContrato(int idContrato) {
-        this.idContrato = idContrato;
-    }
-
-    public String getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
+        this.fechaFinalizacion = fechaFinalizacion;
+        this.montoAlquilerMensual = montoAlquilerMensual;
+        this.activo = activo;
     }
 
-    public String getFechaFin() {
-        return fechaFin;
+    public int getId() {
+        return id;
     }
 
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public double getMontoAlquiler() {
-        return montoAlquiler;
+    public int getIdInquilino() {
+        return idInquilino;
     }
 
-    public void setMontoAlquiler(double montoAlquiler) {
-        this.montoAlquiler = montoAlquiler;
+    public void setIdInquilino(int idInquilino) {
+        this.idInquilino = idInquilino;
     }
-
 
     public Inquilino getInquilino() {
         return inquilino;
@@ -61,6 +54,14 @@ public class Contrato implements Serializable {
 
     public void setInquilino(Inquilino inquilino) {
         this.inquilino = inquilino;
+    }
+
+    public int getIdInmueble() {
+        return idInmueble;
+    }
+
+    public void setIdInmueble(int idInmueble) {
+        this.idInmueble = idInmueble;
     }
 
     public Inmueble getInmueble() {
@@ -71,16 +72,35 @@ public class Contrato implements Serializable {
         this.inmueble = inmueble;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Contrato contrato = (Contrato) o;
-        return idContrato == contrato.idContrato;
+    public String getFechaInicio() {
+        return fechaInicio;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idContrato);
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(String fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
+    }
+
+    public double getMontoAlquilerMensual() {
+        return montoAlquilerMensual;
+    }
+
+    public void setMontoAlquilerMensual(double montoAlquilerMensual) {
+        this.montoAlquilerMensual = montoAlquilerMensual;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

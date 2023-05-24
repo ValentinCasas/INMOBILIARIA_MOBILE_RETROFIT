@@ -49,7 +49,7 @@ public class PerfilFragment extends Fragment {
                 binding.tvApellido.setText(propietario.getApellido());
                 binding.tvCodigo.setText(String.valueOf(propietario.getId()));
                 binding.tvDni.setText(String.valueOf(propietario.getDni()));
-                binding.tvMail.setText(propietario.getUsuario());
+                binding.tvMail.setText(propietario.getEmail());
                 binding.tvClave.setText(propietario.getClave());
                 binding.tvPerfilTelefono.setText(propietario.getTelefono());
             }

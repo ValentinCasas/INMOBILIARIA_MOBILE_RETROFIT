@@ -2,6 +2,8 @@ package com.example.inmobiliaria_android_mobile.ui.perfil;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -9,8 +11,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.inmobiliaria_android_mobile.MainActivity;
 import com.example.inmobiliaria_android_mobile.modelo.Propietario;
 import com.example.inmobiliaria_android_mobile.request.ApiClient;
+import com.example.inmobiliaria_android_mobile.request.ApiClientRetrofit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PerfilViewModel extends AndroidViewModel {
 
@@ -25,31 +33,48 @@ public class PerfilViewModel extends AndroidViewModel {
         api = ApiClient.getApi();
 
     }
-
     public LiveData<String> getValorBotonMutable() {
         if (valorBotonMutable == null) {
             valorBotonMutable = new MutableLiveData<>();
         }
         return valorBotonMutable;
     }
-
     public LiveData<Propietario> getDataPropietarioMutable() {
         if (dataPropietarioMutable == null) {
             dataPropietarioMutable = new MutableLiveData<>();
         }
         return dataPropietarioMutable;
     }
-
     public void cargarPropietarioLogueado() {
-        if (dataPropietarioMutable == null) {
-            dataPropietarioMutable = new MutableLiveData<>();
+        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+
+        if (token.isEmpty()) {
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+            return;
         }
-        dataPropietarioMutable.setValue(api.obtenerUsuarioActual());
+
+        ApiClientRetrofit.EndPointInmobiliaria end = ApiClientRetrofit.getEndPointInmobiliaria();
+        Call<Propietario> call = end.obtenerPerfil(token);
+
+        call.enqueue(new Callback<Propietario>() {
+            @Override
+            public void onResponse(@NonNull Call<Propietario> call, @NonNull Response<Propietario> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        dataPropietarioMutable.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Propietario> call, @NonNull Throwable t) {
+                Toast.makeText(context, "Error al obtener usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
-    ;
-
-
     public void cambiarTextoBoton(String estadoBtn, String dni, String nombre, String apellido, String email, String clave, String telefono) {
         if (valorBotonMutable == null) {
             valorBotonMutable = new MutableLiveData<>();
@@ -74,20 +99,41 @@ public class PerfilViewModel extends AndroidViewModel {
                 propietario.setDni(dniLong);
                 propietario.setNombre(nombre);
                 propietario.setApellido(apellido);
-                propietario.setUsuario(email);
+                propietario.setEmail(email);
                 propietario.setClave(clave);
                 propietario.setTelefono(telefono);
 
-                api.actualizarPerfil(propietario);
+                actualizarPerfil(propietario);
                 valorBotonMutable.setValue("EDITAR");
             }
         } catch (NumberFormatException e) {
-            // Mostramos un Toast con el error
             Toast.makeText(context, "Por favor, ingrese un DNI válido", Toast.LENGTH_SHORT).show();
         } catch (IllegalArgumentException e) {
-            // Mostramos un Toast con el error
             Toast.makeText(context, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
         }
+    }
+    public void actualizarPerfil(Propietario propietario){
+        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+
+        ApiClientRetrofit.EndPointInmobiliaria end = ApiClientRetrofit.getEndPointInmobiliaria();
+        Call<Propietario> call = end.actualizarPerfil(token,propietario);
+
+        call.enqueue(new Callback<Propietario>() {
+            @Override
+            public void onResponse(@NonNull Call<Propietario> call, @NonNull Response<Propietario> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        dataPropietarioMutable.setValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Propietario> call, @NonNull Throwable t) {
+                Toast.makeText(context, "Error al actualizar usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
