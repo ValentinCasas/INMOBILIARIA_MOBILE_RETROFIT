@@ -38,8 +38,6 @@ public class InmueblesFragment extends Fragment {
         mv = new ViewModelProvider(this).get(InmueblesViewModel.class);
         View root = binding.getRoot();
 
-        mv.obtenerPropiedades();
-
         mv.getInmuebles().observe(getViewLifecycleOwner(), new Observer<ArrayList<Inmueble>>() {
             @Override
             public void onChanged(ArrayList<Inmueble> inmuebles) {
@@ -53,7 +51,7 @@ public class InmueblesFragment extends Fragment {
             }
         });
 
-
+        mv.obtenerPropiedades();
 
         return root;
     }

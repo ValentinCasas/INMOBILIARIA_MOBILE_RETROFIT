@@ -3,6 +3,7 @@ package com.example.inmobiliaria_android_mobile.ui.perfil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,15 @@ public class PerfilFragment extends Fragment {
         mv = new ViewModelProvider(this).get(PerfilViewModel.class);
         mv.cargarPropietarioLogueado();
 
+        mv.getImagenMutable().observe(getViewLifecycleOwner(), new Observer<Bitmap>() {
+            @Override
+            public void onChanged(Bitmap imageBytes) {
+                if (imageBytes != null) {
+
+                    binding.ivAvatar.setImageBitmap(imageBytes);
+                }
+            }
+        });
         mv.getDataPropietarioMutable().observe(getViewLifecycleOwner(), new Observer<Propietario>() {
             @Override
             public void onChanged(Propietario propietario) {

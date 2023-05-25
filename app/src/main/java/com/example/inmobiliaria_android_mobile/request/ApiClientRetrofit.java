@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -77,6 +78,10 @@ public class ApiClientRetrofit {
         //pagos del contrato
         @GET("Inmueble/pagos-contrato/{contratoId}")
         Call<ArrayList<Pago>> pagosPorContrato(@Header("Authorization") String token, @Path("contratoId") int contratoId);
+
+        //imagen del propietario
+        @GET("Propietario/imagen/{id}")
+        Call<ResponseBody> obtenerImagenPropietario(@Header("Authorization") String token, @Path("id") int id);
 
 
     }

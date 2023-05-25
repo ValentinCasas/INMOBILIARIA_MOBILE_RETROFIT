@@ -41,9 +41,6 @@ public class DetalleInquilinoFragment extends Fragment {
         Bundle bundle = getArguments();
         inmueble = (Inmueble) bundle.getSerializable("inmueble");
 
-        mv.obtenerInquilino(inmueble);
-        mv.obtenerPropietarioGarante();
-
         mv.getInquilinoMutable().observe(getViewLifecycleOwner(), new Observer<Inquilino>() {
             @Override
             public void onChanged(Inquilino inquilino) {
@@ -65,6 +62,8 @@ public class DetalleInquilinoFragment extends Fragment {
             }
         });
 
+        mv.obtenerInquilino(inmueble);
+        mv.obtenerPropietarioGarante();
 
         return root;
     }

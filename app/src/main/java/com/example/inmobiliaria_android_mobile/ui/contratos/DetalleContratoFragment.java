@@ -44,8 +44,6 @@ public class DetalleContratoFragment extends Fragment {
         Bundle bundle = getArguments();
         inmueble = (Inmueble) bundle.getSerializable("inmueble");
 
-        mv.obtenerContrato(inmueble);
-
         mv.getContratoMutable().observe(getViewLifecycleOwner(), new Observer<Contrato>() {
             @Override
             public void onChanged(Contrato contrato) {
@@ -55,14 +53,19 @@ public class DetalleContratoFragment extends Fragment {
 
                 binding.tvCodigo.setText(String.valueOf(contrato.getId()));
                 binding.tvMontoMensual.setText(String.valueOf(contrato.getMontoAlquilerMensual()));
-                binding.tvFechaInicio.setText(contrato.getFechaInicio());
-                binding.tvFechaFinalizacion.setText(contrato.getFechaFinalizacion());
+
+                String fechaInicio = contrato.getFechaInicio();
+                String fechaFinalizacion = contrato.getFechaFinalizacion();
+                String fechaInicioFormateada = fechaInicio.substring(0, 10); // Extraer solo la parte de la fecha
+                String fechaFinalizacionFormateada = fechaFinalizacion.substring(0, 10); // Extraer solo la parte de la fecha
+                binding.tvFechaInicio.setText(fechaInicioFormateada);
+                binding.tvFechaFinalizacion.setText(fechaFinalizacionFormateada);
+
                 binding.tvInquilino.setText(inquilino.getNombre());
                 binding.tvInmueble.setText(inmueble.getDireccion());
                 binding.btnPagos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mv.obtenerPagosPorContrato(contrato.getId());
                         mv.getPagosMutable().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pago>>() {
                             @Override
                             public void onChanged(ArrayList<Pago> pagos) {
@@ -72,12 +75,16 @@ public class DetalleContratoFragment extends Fragment {
                                 navController.navigate(R.id.nav_detallePagosFragment, bundle);
                             }
                         });
+
+                        mv.obtenerPagosPorContrato(contrato.getId());
                     }
                 });
 
 
             }
         });
+
+        mv.obtenerContrato(inmueble);
 
 
         return root;

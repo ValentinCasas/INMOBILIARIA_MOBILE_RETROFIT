@@ -50,7 +50,11 @@ public class PagosAdapter extends RecyclerView.Adapter<PagosAdapter.ViewHolder> 
         holder.numPago.setText(String.valueOf(pagosAsociados.get(position).getNumDePago()));
         holder.codigoContrato.setText(String.valueOf(pagosAsociados.get(position).getContrato().getId()));
         holder.importe.setText(String.valueOf(pagosAsociados.get(position).getImporte()));
-        holder.fechaDePago.setText(pagosAsociados.get(position).getFechaDePago());
+
+        String fechaDePago = pagosAsociados.get(position).getFechaDePago();
+        String fechaDePagoFormateada = fechaDePago.substring(0, 10);
+        holder.fechaDePago.setText(fechaDePagoFormateada);
+
     }
 
     @Override

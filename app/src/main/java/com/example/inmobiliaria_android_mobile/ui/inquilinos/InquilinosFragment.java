@@ -39,9 +39,6 @@ public class InquilinosFragment extends Fragment {
         binding = FragmentInquilinosBinding.inflate(inflater, container, false);
         mv = new ViewModelProvider(this).get(InquilinosViewModel.class);
         View root = binding.getRoot();
-
-        mv.obtenerPropiedadesAlquiladas();
-
         mv.getInmueblesAlquilados().observe(getViewLifecycleOwner(), new Observer<ArrayList<Inmueble>>() {
             @Override
             public void onChanged(ArrayList<Inmueble> inmuebles) {
@@ -54,6 +51,8 @@ public class InquilinosFragment extends Fragment {
 
             }
         });
+
+        mv.obtenerPropiedadesAlquiladas();
 
 
         return root;

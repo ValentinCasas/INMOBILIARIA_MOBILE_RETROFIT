@@ -1,6 +1,8 @@
 package com.example.inmobiliaria_android_mobile;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -44,6 +46,16 @@ public class MenuActivity extends AppCompatActivity {
         TextView tvEmail = headerView.findViewById(R.id.tvMail);
 
         mv.obtenerPropietario();
+
+        mv.getImagenMutable().observe(this, new Observer<Bitmap>() {
+            @Override
+            public void onChanged(Bitmap imageBytes) {
+                if (imageBytes != null) {
+
+                    imageView.setImageBitmap(imageBytes);
+                }
+            }
+        });
 
         mv.getPropietarioMutable().observe(this, new Observer<Propietario>() {
             @Override

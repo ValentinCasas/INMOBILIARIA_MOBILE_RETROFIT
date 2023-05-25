@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +17,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.inmobiliaria_android_mobile.modelo.Propietario;
 import com.example.inmobiliaria_android_mobile.request.ApiClientRetrofit;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,9 +28,17 @@ public class MenuActivityViewModel extends AndroidViewModel {
 
     private Context context;
     private MutableLiveData<Propietario> propietarioMutable;
+    private MutableLiveData<Bitmap> imagenMutable;
     public MenuActivityViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
+    }
+
+    public LiveData<Bitmap> getImagenMutable() {
+        if(imagenMutable == null){
+            imagenMutable = new MutableLiveData<>();
+        }
+        return imagenMutable;
     }
 
     public LiveData<Propietario> getPropietarioMutable() {
@@ -55,6 +68,9 @@ public class MenuActivityViewModel extends AndroidViewModel {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         propietarioMutable.setValue(response.body());
+
+                        // Obtener la imagen del propietario
+                        obtenerImagenPropietario(response.body().getId());
                     }
                 }
             }
@@ -65,4 +81,42 @@ public class MenuActivityViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void obtenerImagenPropietario(int id) {
+        SharedPreferences sp = context.getSharedPreferences("token.xml", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+
+        ApiClientRetrofit.EndPointInmobiliaria end = ApiClientRetrofit.getEndPointInmobiliaria();
+        Call<ResponseBody> call = end.obtenerImagenPropietario(token, id);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        byte[] imageBytes = response.body().bytes();
+
+                        // Convertir los bytes de la imagen a un objeto Bitmap
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+                        // Guardar el objeto Bitmap en un MutableLiveData
+                        imagenMutable.setValue(bitmap);
+
+                        // Utilizar el MutableLiveData como sea necesario
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, "Error al obtener imagen", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                Log.d("error", t.getMessage());
+                Toast.makeText(context, "Error al obtener imagen", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

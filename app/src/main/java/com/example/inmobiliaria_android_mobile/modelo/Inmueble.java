@@ -15,10 +15,10 @@ public class Inmueble implements Serializable {
     private String coordenadas;
     private double precioInmueble;
     private String estado;
-    //private String imagen;
+    private String avatarUrl;
 
 
-    public Inmueble(int id, int idPropietario, Propietario propietario, String direccion, String uso, String tipo, int cantidadAmbientes, String coordenadas, double precioInmueble, String estado) {
+    public Inmueble(int id, int idPropietario, Propietario propietario, String direccion, String uso, String tipo, int cantidadAmbientes, String coordenadas, double precioInmueble, String estado, String avatarUrl) {
         this.id = id;
         this.idPropietario = idPropietario;
         this.propietario = propietario;
@@ -29,6 +29,7 @@ public class Inmueble implements Serializable {
         this.coordenadas = coordenadas;
         this.precioInmueble = precioInmueble;
         this.estado = estado;
+        this.avatarUrl = avatarUrl;
     }
 
     public int getId() {
@@ -45,6 +46,14 @@ public class Inmueble implements Serializable {
 
     public void setIdPropietario(int idPropietario) {
         this.idPropietario = idPropietario;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public Propietario getPropietario() {
