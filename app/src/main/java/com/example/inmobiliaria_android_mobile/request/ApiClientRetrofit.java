@@ -24,7 +24,7 @@ import retrofit2.http.Path;
 
 public class ApiClientRetrofit {
 
-    private static final String PATH = "http://192.168.0.102:5200/api/";
+    private static final String PATH = "http://192.168.0.101:5200/api/";
     private static EndPointInmobiliaria endPointInmobiliaria;
 
     public static EndPointInmobiliaria getEndPointInmobiliaria() {
